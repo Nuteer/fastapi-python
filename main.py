@@ -1,9 +1,8 @@
 from fastapi import FastAPI
-import fastapi
 
 from pydantic import BaseModel
 
-app = fastapi()
+app = FastAPI()
 
 #rota raiz
 @app.get("/")
@@ -19,8 +18,8 @@ class Usuario(BaseModel):
 #criar base de dados
 
 base_de_dados = [
-    Usuario(id=1; email="nuteer@nuteer.com.br", senha="senha123"),
-    Usuario(id=2; email="teste@teste.com.br", senha="teste123")
+    Usuario(id=1, email="nuteer@nuteer.com.br", senha="senha123"),
+    Usuario(id=2, email="teste@teste.com.br", senha="teste123")
 ]
 
 # rota Get ALL
@@ -32,3 +31,14 @@ def get_todo_os_usuarios():
 @app.get("/usuarios/{id_usuario: int}")
 def get_usuario_usando_id(id_usuario: int):
     for usuario in base_de_dados:
+        if(usuario.id == id_usuario):
+            return usuario
+
+    return {"Status": 404, "Mensagem": "Nao encontrou usuario"}
+
+# rota insere
+@app.post("/usuarios")
+def insere_usuario(usuario: Usuario):
+    #criar regras de negocio
+    base_de_dados.append(usuario)
+    return usuario
